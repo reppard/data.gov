@@ -3,12 +3,13 @@ require 'open-uri'
 require 'json'
 
 class AirNowRequestBuilder
+  attr_reader :format, :date, :distance
   def initialize params={}
     @zip         = params.fetch(:zip)
+    @api_key     = params.fetch(:api_key)
     @format      = params.fetch(:format, "application/json")
     @date        = params.fetch(:date, Date.parse(Time.now.to_s))
     @distance    = params.fetch(:distance, 25)
-    @api_key     = params.fetch(:api_key)
   end
 
   def create
@@ -31,18 +32,21 @@ class AirNowRequestBuilder
   end
 end
 
-zip_code = ARGV[0].chomp
 
-request = AirNowRequestBuilder.new(
-  {
-    zip: zip_code,
-    api_key: ENV['API_KEY']
-  }
-).create
+# When run as a script
+if ARGV[0]
+  zip_code = ARGV[0].chomp
+  request = AirNowRequestBuilder.new(
+    {
+      zip: zip_code,
+      api_key: ENV['API_KEY']
+    }
+  ).create
 
 
-response = JSON.parse(open(request).read)
-formatted = JSON.pretty_generate(response)
+  response = JSON.parse(open(request).read)
+  formatted = JSON.pretty_generate(response)
 
-puts response
-puts formatted
+  puts response
+  puts formatted
+end
