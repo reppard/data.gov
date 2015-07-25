@@ -15,10 +15,12 @@ describe AirNowRequestBuilder do
     end
 
     it 'provides defaults for :format, :date, and :distance' do
-      request = AirNowRequestBuilder.new({
-                  zip:     '12345',
-                  api_key: '123445' 
-                })
+      request = AirNowRequestBuilder.new(
+        {
+          zip:     '12345',
+          api_key: '123445'
+        }
+      )
 
       expect(request.format).to eq("application/json")
       expect(request.date.class).to eq(Date)
@@ -26,13 +28,15 @@ describe AirNowRequestBuilder do
     end
 
     it 'should allow setting :format, :date, and :distance' do
-      request = AirNowRequestBuilder.new({
-                  zip:      '12345',
-                  api_key:  '123445',
-                  format:   'fake/format',
-                  date:     '2015-10-20',
-                  distance: 50
-                })
+      request = AirNowRequestBuilder.new(
+        {
+          zip:      '12345',
+          api_key:  '123445',
+          format:   'fake/format',
+          date:     '2015-10-20',
+          distance: 50
+        }
+      )
 
       expect(request.format).to eq('fake/format')
       expect(request.date).to eq('2015-10-20')
@@ -46,7 +50,8 @@ describe AirNowRequestBuilder do
         {
           zip:     '12345',
           api_key: '123445'
-        }).create
+        }
+      ).create
 
       expect(request.class).to eq(String)
     end
@@ -57,7 +62,9 @@ describe AirNowRequestBuilder do
           zip:     '12345',
           api_key: '123445',
           date:    '2015-11-11'
-        }).create
+        }
+      ).create
+
       expected = "http://www.airnowapi.org/aq/forecast/zipCode/?format=application/json&zipCode=12345&date=2015-11-11&distance=25&API_KEY=123445"
 
       expect(request).to eq(expected)
